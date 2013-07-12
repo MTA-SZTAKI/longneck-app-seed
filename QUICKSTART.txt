@@ -1,0 +1,26 @@
+
+              QUICKSTART for Longneck
+
+This you need before you can run this application:
+
+ - Apache Maven, above 3.0.x (http://maven.apache.org/).
+   It's useful to have the 'mvn' executable in your PATH!
+
+After you have all the above prerequisites, run:
+
+    $ mvn install
+
+This will:
+ - download all needed dependencies into templates/lib/;
+ - build your application;
+ - the executable scripts shall be created in bin/
+
+Now you can do:
+
+    bin/<project-name> -p processes/your-process.xml
+
+This will run the process defined in "processes/your-process.xml".
+
+See http://longneck.sztaki.hu for more details.
+
+Have fun!

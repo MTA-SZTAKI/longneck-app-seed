@@ -1,0 +1,5 @@
+/bin/*
+/conf/*
+/target/
+/templates/lib/*.jar
+nb*.xml
