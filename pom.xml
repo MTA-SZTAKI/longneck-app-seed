@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>hu.sztaki.ilab.longneck</groupId>
-  <artifactId>app-seed</artifactId>
+  <artifactId>longneck-app-seed</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>app-seed</name>
+  <name>longneck-app-seed</name>
   <description>
     A seed app to enable easy initialization of longneck application projects.
   </description>
@@ -51,9 +51,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:MTA-SZTAKI/app-seed.git</connection>
-    <url>https://github.com/MTA-SZTAKI/app-seed.git</url>
-    <developerConnection>scm:git:git@github.com:MTA-SZTAKI/app-seed.git</developerConnection>
+    <url>https://github.com/MTA-SZTAKI/longneck-app-seed</url>
+    <connection>scm:git:https://github.com/MTA-SZTAKI/longneck-app-seed.git</connection>
+    <developerConnection>scm:git:https://github.com/MTA-SZTAKI/longneck-app-seed.git</developerConnection>
   </scm>
 
   <distributionManagement>
@@ -126,21 +126,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>hu.sztaki.ilab.longneck.cli.CliRunner</mainClass>
-              <classpathPrefix>lib/</classpathPrefix>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-
       <!-- Copy dependencies -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -154,7 +139,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.basedir}/templates/lib</outputDirectory>
+              <outputDirectory>${project.basedir}/lib</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
               <overWriteIfNewer>true</overWriteIfNewer>
@@ -181,50 +166,39 @@
         <executions>
           <execution>
             <id>prepare-distribution</id>
-            <phase>install</phase>
+            <phase>package</phase>
             <goals>
               <goal>run</goal>
             </goals>
             <configuration>
               <target>
-                <!-- Clean up distribution files -->
-                <delete>
-                  <dirset dir="${project.basedir}" includes="var" />
-                </delete>
-
                 <!-- Create directory structure -->
                 <mkdir dir="${project.basedir}/bin" />
                 <mkdir dir="${project.basedir}/config" />
                 <mkdir dir="${project.basedir}/log" />
 
                 <!-- Create executable -->
-                <copy file="templates/bin/run-longneck" tofile="${project.basedir}/bin/${project.artifactId}"
+                <copy file="${project.basedir}/templates/bin/run-longneck" tofile="${project.basedir}/bin/${project.artifactId}"
                   overwrite="true" />
                 <replace file="${project.basedir}/bin/${project.artifactId}" propertyFile="templates/properties/distribution.properties">
-                  <replacefilter token="@SHAREDIR@" property="distribution.sharedir" />
                   <replacefilter token="@PACKAGE@" value="${project.build.finalName}.jar" />
                   <replacefilter token="@MAINCLASS@" property="distribution.mainClass" />
                 </replace>
                 <chmod file="${project.basedir}/bin/${project.artifactId}" perm="755" />
 
                 <!-- Create debug executable -->
-                <copy file="templates/bin/run-longneck-debug" tofile="${project.basedir}/bin/${project.artifactId}-debug"
+                <copy file="${project.basedir}/templates/bin/run-longneck-debug" tofile="${project.basedir}/bin/${project.artifactId}-debug"
                   overwrite="true" />
                 <replace file="${project.basedir}/bin/${project.artifactId}-debug"
                   propertyFile="templates/properties/distribution.properties">
-                  <replacefilter token="@SHAREDIR@" property="distribution.sharedir" />
                   <replacefilter token="@PACKAGE@" value="${project.build.finalName}.jar" />
                   <replacefilter token="@MAINCLASS@" property="distribution.mainClass" />
                 </replace>
                 <chmod file="${project.basedir}/bin/${project.artifactId}-debug" perm="755" />
 
                 <!-- Create log properties -->
-                <copy file="templates/properties/log4j.properties" tofile="${project.basedir}/config/log4j.properties"
+                <copy file="${project.basedir}/templates/properties/log4j.properties" tofile="${project.basedir}/config/log4j.properties"
                   overwrite="false" />
-                <replace file="${project.basedir}/config/log4j.properties" propertyFile="templates/properties/distribution.properties">
-                  <replacefilter token="@LOGDIR@" property="distribution.logdir" />
-                </replace>
-                <chmod file="${project.basedir}/bin/${project.artifactId}" perm="755" />
 
               </target>
             </configuration>

@@ -1,5 +1,5 @@
 /bin/*
-/conf/*
+/config/
 /target/
-/templates/lib/*.jar
+/lib/
 nb*.xml
