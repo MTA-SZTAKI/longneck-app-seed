@@ -125,6 +125,29 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      
+      <!-- Remove jar files from lib directory and the run script from bin directory. (build adds them again). -->
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <filesets>
+            <fileset>
+                <directory>lib</directory>
+              <includes>
+                <include>*.jar</include>
+              </includes>
+            </fileset>
+            <fileset>
+                <directory>bin</directory>
+              <includes>
+                <include>*</include>
+              </includes>
+            </fileset>
+          </filesets>
+          <verbose>true</verbose>
+        </configuration>
+      </plugin>
 
       <!-- Copy dependencies -->
       <plugin>
